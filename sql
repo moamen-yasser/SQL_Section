@@ -163,3 +163,91 @@ Except
 select distinct city
 from Branch 
 where city not in (select city from project);
+
+
+
+
+create table department(
+departmentName char(18) primary key,
+phone char(18) not null,
+building char(18),
+room int,
+);
+
+
+create table student (
+studentNumber int primary key,
+studentLastName char(18) not null,
+studentFirstName char(18) not null,
+email char(50) unique check (email like "*@usna.edu"),
+phoneNumber char(18) default "410-123-4567",
+majorDepartmentName char(18),
+foreign key (majorDepartmentName) references department (departmentName) on delete set null on update cascade,
+);
+
+
+-- select * from student;
+
+/*Alter*/
+create table customers(
+customerId int,
+);
+
+alter table customers 
+add email varchar(50);
+
+-- alter table customers
+-- drop column email;
+
+alter table customers
+alter column email varchar(100);
+
+-- select * from customers;
+
+
+-- drop table department;
+
+
+/*View*/
+
+CREATE TABLE Staff (
+    staffNo CHAR(5) PRIMARY KEY,
+    fName VARCHAR(18) NOT NULL,
+    lName VARCHAR(18) NOT NULL,
+    position VARCHAR(20),
+    sex CHAR(1) CHECK (sex IN ('M', 'F')),
+    DOB DATE,
+    salary DECIMAL(10, 2),
+    branchNo CHAR(4)
+);
+go
+
+INSERT INTO Staff
+VALUES 
+('SG19', 'Peter', 'Jack', 'Assistant', 'M', '1970-11-20', 11500.00, 'B003'),
+('SL21', 'John', 'White', 'Manager', 'M', '1965-10-01', 30000.00, 'B005'),
+('SL41', 'Julie', 'Lee', 'Assistant', 'F', '1985-06-13', 10500.00, 'B005'),
+('SA9', 'Mary', 'Howe', 'Assistant', 'F', '1990-02-19', 11000.00, 'B007'),
+('SA12', 'Robert', 'Ford', 'Supervisor', 'M', '1975-12-05', 19000.00, 'B007');
+go
+
+
+create view manager3Staff as 
+select * from Staff 
+where branchNo = 'B003';
+go
+
+
+create view staff3 as 
+select staffNo, fName,lName,position,sex
+from manager3Staff 
+where branchNo = 'B003';
+go
+
+
+select * from manager3Staff;
+
+select * from staff3;
+
+drop view manager3Staff;
+
